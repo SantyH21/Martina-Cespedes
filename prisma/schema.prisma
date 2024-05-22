@@ -1,14 +1,118 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL_OWNER")
+}
+
+model ciudad {
+  id_ciudad     Int         @id @default(autoincrement())
+  nombre_ciudad String?     @db.VarChar(20)
+  domicilio     domicilio[]
+}
+
+model cliente {
+  id_cliente       Int       @id @default(autoincrement())
+  segmento         String?   @db.VarChar(20)
+  nom_resp_cliente String?   @db.VarChar(20)
+  estado_cliente   String?   @db.VarChar(20)
+  coment_cliente   String?   @db.VarChar(20)
+  id_persona       Int?
+  personas         personas? @relation(fields: [id_persona], references: [id_persona], onDelete: NoAction, onUpdate: NoAction)
+  ventas           ventas[]
+}
+
+model domicilio {
+  id_domicilio Int       @id @default(autoincrement())
+  numero_dom   Int?
+  calle_dom    String?   @db.VarChar(20)
+  id_persona   Int?
+  id_ciudad    Int?
+  ciudad       ciudad?   @relation(fields: [id_ciudad], references: [id_ciudad], onDelete: NoAction, onUpdate: NoAction)
+  personas     personas? @relation(fields: [id_persona], references: [id_persona], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model empleado {
+  id_empleado Int       @id @default(autoincrement())
+  cargo_emp   String?   @db.VarChar(20)
+  id_persona  Int?
+  personas    personas? @relation(fields: [id_persona], references: [id_persona], onDelete: NoAction, onUpdate: NoAction)
+  rol         rol[]
+  ventas      ventas[]
+}
+
+model insumo {
+  id_insumo        Int       @id @default(autoincrement())
+  nom_insumo       String?   @db.VarChar(20)
+  fecha_ing_insumo DateTime? @db.Date
+  id_prod          Int?
+  producto         producto? @relation(fields: [id_prod], references: [id_prod], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model materia_prima {
+  id_mat_prima        Int       @id @default(autoincrement())
+  nom_mat_prima       String?   @db.VarChar(20)
+  fecha_ing_mat_prima DateTime? @db.Date
+  id_prod             Int?
+  producto            producto? @relation(fields: [id_prod], references: [id_prod], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model personas {
+  id_persona   Int         @id @default(autoincrement())
+  nom_persona  String?     @db.VarChar(20)
+  apel_persona String?     @db.VarChar(20)
+  cliente      cliente[]
+  domicilio    domicilio[]
+  empleado     empleado[]
+  telefono     telefono[]
+}
+
+model producto {
+  id_prod       Int             @id @default(autoincrement())
+  nom_prod      String?         @db.VarChar(20)
+  id_ventas     Int?
+  insumo        insumo[]
+  materia_prima materia_prima[]
+  ventas        ventas?         @relation(fields: [id_ventas], references: [id_ventas], onDelete: NoAction, onUpdate: NoAction, map: "fk_prod_ventas")
+  stock         stock[]
+}
+
+model rol {
+  id_rol      Int       @id @default(autoincrement())
+  tipo_rol    String?   @db.VarChar(20)
+  contr_rol   String?   @db.VarChar(20)
+  mail_rol    String?   @db.VarChar(40)
+  id_empleado Int?
+  empleado    empleado? @relation(fields: [id_empleado], references: [id_empleado], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model stock {
+  id_stock       Int       @id @default(autoincrement())
+  nom_prod_stock String?   @db.VarChar(20)
+  cant_stock     Int?
+  id_prod        Int?
+  producto       producto? @relation(fields: [id_prod], references: [id_prod], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model telefono {
+  id_telefono     Int       @id @default(autoincrement())
+  numero_telefono Int?
+  id_persona      Int?
+  personas        personas? @relation(fields: [id_persona], references: [id_persona], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model ventas {
+  id_ventas   Int        @id @default(autoincrement())
+  facturado   String?    @db.VarChar(20)
+  cobrado     String?    @db.VarChar(20)
+  pendiente   String?    @db.VarChar(20)
+  fecha_fac   DateTime?  @db.Date
+  id_cliente  Int?
+  id_empleado Int?
+  producto    producto[]
+  cliente     cliente?   @relation(fields: [id_cliente], references: [id_cliente], onDelete: NoAction, onUpdate: NoAction, map: "fk_cliente_ventas")
+  empleado    empleado?  @relation(fields: [id_empleado], references: [id_empleado], onDelete: NoAction, onUpdate: NoAction, map: "fk_emp_ventas")
 }
