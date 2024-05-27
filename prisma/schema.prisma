@@ -99,7 +99,7 @@ model stock {
 
 model telefono {
   id_telefono     Int       @id @default(autoincrement())
-  numero_telefono Int?
+  numero_telefono String? 
   id_persona      Int?
   personas        personas? @relation(fields: [id_persona], references: [id_persona], onDelete: NoAction, onUpdate: NoAction)
 }
