@@ -47,7 +47,7 @@ model empleado {
 model insumo {
   id_insumo        Int       @id @default(autoincrement())
   nom_insumo       String?   @db.VarChar(20)
-  fecha_ing_insumo DateTime? @db.Date
+  fecha_ing_insumo DateTime? @db.Date  @default(now())
   id_prod          Int?
   producto         producto? @relation(fields: [id_prod], references: [id_prod], onDelete: NoAction, onUpdate: NoAction)
 }
@@ -55,7 +55,7 @@ model insumo {
 model materia_prima {
   id_mat_prima        Int       @id @default(autoincrement())
   nom_mat_prima       String?   @db.VarChar(20)
-  fecha_ing_mat_prima DateTime? @db.Date
+  fecha_ing_mat_prima DateTime? @db.Date @default(now())
   id_prod             Int?
   producto            producto? @relation(fields: [id_prod], references: [id_prod], onDelete: NoAction, onUpdate: NoAction)
 }
@@ -99,7 +99,7 @@ model stock {
 
 model telefono {
   id_telefono     Int       @id @default(autoincrement())
-  numero_telefono String? 
+  numero_telefono BigInt? 
   id_persona      Int?
   personas        personas? @relation(fields: [id_persona], references: [id_persona], onDelete: NoAction, onUpdate: NoAction)
 }
@@ -109,7 +109,7 @@ model ventas {
   facturado   String?    @db.VarChar(20)
   cobrado     String?    @db.VarChar(20)
   pendiente   String?    @db.VarChar(20)
-  fecha_fac   DateTime?  @db.Date
+  fecha_fac   DateTime?  @db.Date   @default(now())
   id_cliente  Int?
   id_empleado Int?
   producto    producto[]
