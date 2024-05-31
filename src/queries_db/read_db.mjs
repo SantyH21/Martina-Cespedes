@@ -50,6 +50,6 @@ async function getRecordsByAttribute(tableName, attribute, value) {
 //   .then(records => console.log(records))
 //   .catch(error => console.error(error));
 
-  getRecordsByAttribute('telefono', 'numero_telefono', '3814171961')
-  .then(records => console.log(record_unico))
-  .catch(error => console.error(error));
+  // getRecordsByAttribute('telefono', 'numero_telefono', '3814171961')
+  // .then(records => console.log(record_unico))
+  // .catch(error => console.error(error));
