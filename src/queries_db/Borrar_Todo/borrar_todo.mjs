@@ -16,6 +16,7 @@ async function delete_all() {
     await prisma.cliente.deleteMany();
     await prisma.ciudad.deleteMany();
     await prisma.personas.deleteMany();
+    console.log("Datos borrados exitosamente")
 }
 
 delete_all()

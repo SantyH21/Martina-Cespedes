@@ -4,7 +4,7 @@ const prisma = new PrismaClient()
 
 async function getAllRecords(tableName) {
   try {
-    // Verifica si el nombre de la tabla es válido
+   // Verifica si el nombre de la tabla es válido
     if (!prisma[tableName]) {
       throw new Error(`Table ${tableName} does not exist.`);
     }
@@ -45,11 +45,11 @@ async function getRecordsByAttribute(tableName, attribute, value) {
   }
 }
 
-// // Ejemplo de uso
+//Ejemplo de uso
 // getAllRecords('personas')
 //   .then(records => console.log(records))
 //   .catch(error => console.error(error));
 
-  // getRecordsByAttribute('telefono', 'numero_telefono', '3814171961')
-  // .then(records => console.log(record_unico))
-  // .catch(error => console.error(error));
+getRecordsByAttribute('telefono', 'numero_telefono', '1234567890')
+  .then(record_unico => console.log(record_unico))
+  .catch(error => console.error(error));

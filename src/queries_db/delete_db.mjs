@@ -28,19 +28,21 @@ async function deleteRecordById(table, idField, idValue) {
   }
 }
 
-// // Ejemplo de uso
-// (async () => {
-//   try {
-//     // Borrar todos los registros de la tabla 'ciudad'
-//     const tableNameAll = 'ciudad';
-//     await deleteAllRecords(tableNameAll);
+// Ejemplo de uso
+async function delete_ejemplo() {
+  try {
+    // Borrar todos los registros de la tabla 'ciudad'
+    const tableNameAll = 'ventas';
+    await deleteAllRecords(tableNameAll);
     
-//     // Borrar un registro específico de la tabla 'ciudad' por ID
-//     const tableNameById = 'ciudad';
-//     const idField = 'id_ciudad';
-//     const idValue = 1; // ID del registro a borrar
-//     await deleteRecordById(tableNameById, idField, idValue);
-//   } catch (error) {
-//     console.error('Error en el proceso de borrado:', error);
-//   }
-// })();
+    // Borrar un registro específico de la tabla 'ciudad' por ID
+    const tableNameById = 'insumo';
+    const idField = 'id_insumo';
+    const idValue = 5; // ID del registro a borrar
+    await deleteRecordById(tableNameById, idField, idValue);
+  } catch (error) {
+    console.error('Error en el proceso de borrado:', error);
+  }
+};
+
+delete_ejemplo();
