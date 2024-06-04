@@ -22,22 +22,18 @@ async function update_ejemplo() {
   try {
     // Actualizar registro en la tabla 'ciudad' usando el ID
     const tableName = 'ciudad';
-    const searchData = { id_ciudad: 5 }; // Condición para encontrar el registro a actualizar
-    const updateData = { nombre_ciudad: 'Ciudad Actualizada por ID' }; // Nuevos datos para actualizar
+    const searchData = { id_ciudad: 6 }; // Condición para encontrar el registro a actualizar
+    const updateData = { nombre_ciudad: 'Ciudad 2 Actualizada' }; // Nuevos datos para actualizar (asegúrate que no exceda VARCHAR(20))
 
     const updatedRecord = await updateRecord(tableName, searchData, updateData);
     console.log('Registro actualizado:', updatedRecord);
     
-    // Actualizar registro en la tabla 'ciudad' usando otro campo único
-    const searchDataByName = { nombre_ciudad: 'Ciudad 2' }; // Condición para encontrar el registro a actualizar
-    const updateDataByName = { nombre_ciudad: 'Ciudad Actualizada por Nombre' }; // Nuevos datos para actualizar
-
-    const updatedRecordByName = await updateRecord(tableName, searchDataByName, updateDataByName);
-    console.log('Registro actualizado:', updatedRecordByName);
-    
   } catch (error) {
     console.error('Error actualizando registro:', error);
   }
-};
+}
 
-update_ejemplo()
+update_ejemplo().catch((e) => {
+  console.error(e);
+  prisma.$disconnect();
+});

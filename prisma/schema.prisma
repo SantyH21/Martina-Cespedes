@@ -10,16 +10,16 @@ datasource db {
 
 model ciudad {
   id_ciudad     Int         @id @default(autoincrement())
-  nombre_ciudad String?     @db.VarChar(20)
+  nombre_ciudad String?     @db.VarChar(50)
   domicilio     domicilio[]
 }
 
 model cliente {
   id_cliente       Int       @id @default(autoincrement())
-  segmento         String?   @db.VarChar(20)
-  nom_resp_cliente String?   @db.VarChar(20)
+  segmento         String?   @db.VarChar(50)
+  nom_resp_cliente String?   @db.VarChar(50)
   estado_cliente   String?   @db.VarChar(20)
-  coment_cliente   String?   @db.VarChar(20)
+  coment_cliente   String?   @db.VarChar(50)
   id_persona       Int?
   personas         personas? @relation(fields: [id_persona], references: [id_persona], onDelete: NoAction, onUpdate: NoAction)
   ventas           ventas[]
@@ -28,7 +28,7 @@ model cliente {
 model domicilio {
   id_domicilio Int       @id @default(autoincrement())
   numero_dom   Int?
-  calle_dom    String?   @db.VarChar(20)
+  calle_dom    String?   @db.VarChar(50)
   id_persona   Int?
   id_ciudad    Int?
   ciudad       ciudad?   @relation(fields: [id_ciudad], references: [id_ciudad], onDelete: NoAction, onUpdate: NoAction)
@@ -46,7 +46,7 @@ model empleado {
 
 model insumo {
   id_insumo        Int       @id @default(autoincrement())
-  nom_insumo       String?   @db.VarChar(20)
+  nom_insumo       String?   @db.VarChar(30)
   fecha_ing_insumo DateTime? @db.Date  @default(now())
   id_prod          Int?
   producto         producto? @relation(fields: [id_prod], references: [id_prod], onDelete: NoAction, onUpdate: NoAction)
@@ -54,7 +54,7 @@ model insumo {
 
 model materia_prima {
   id_mat_prima        Int       @id @default(autoincrement())
-  nom_mat_prima       String?   @db.VarChar(20)
+  nom_mat_prima       String?   @db.VarChar(30)
   fecha_ing_mat_prima DateTime? @db.Date @default(now())
   id_prod             Int?
   producto            producto? @relation(fields: [id_prod], references: [id_prod], onDelete: NoAction, onUpdate: NoAction)
@@ -62,8 +62,8 @@ model materia_prima {
 
 model personas {
   id_persona   Int         @id @default(autoincrement())
-  nom_persona  String?     @db.VarChar(20)
-  apel_persona String?     @db.VarChar(20)
+  nom_persona  String?     @db.VarChar(30)
+  apel_persona String?     @db.VarChar(30)
   cliente      cliente[]
   domicilio    domicilio[]
   empleado     empleado[]
@@ -72,7 +72,7 @@ model personas {
 
 model producto {
   id_prod       Int             @id @default(autoincrement())
-  nom_prod      String?         @db.VarChar(20)
+  nom_prod      String?         @db.VarChar(30)
   id_ventas     Int?
   insumo        insumo[]
   materia_prima materia_prima[]
@@ -91,7 +91,7 @@ model rol {
 
 model stock {
   id_stock       Int       @id @default(autoincrement())
-  nom_prod_stock String?   @db.VarChar(20)
+  nom_prod_stock String?   @db.VarChar(30)
   cant_stock     Int?
   id_prod        Int?
   producto       producto? @relation(fields: [id_prod], references: [id_prod], onDelete: NoAction, onUpdate: NoAction)
