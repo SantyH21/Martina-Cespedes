@@ -1,13 +1,19 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const auth = require('./auth.js');
+// Importar variables de entorno
+import dotenv from 'dotenv';
+dotenv.config();
+
+// Importar módulos
+import express from 'express';
+import bodyParser from 'body-parser';
+import auth from './auth.mjs';
+
+// Crear instancia de express
 const app = express();
-require('dotenv').config();
 
 const port = 3000;
 
 // Middleware para parsear cuerpos de solicitudes con URL-encoded
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/login', (req, res) => {
     res.send(`
@@ -80,9 +86,9 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/auth', (req, res) => {
-    const user= { username} = req.body;
+    const user = { username: req.body.username };
+        //debug
     console.log(user);
-    console.log(process.env.JWT_SECRET);
 
     // Aquí la autenticación con la BD
     const accessToken = auth.generateAccessToken(user);

@@ -3,20 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function seed() {
-    // Borra todos los registros de las tablas
-    await prisma.telefono.deleteMany();
-    await prisma.stock.deleteMany();
-    await prisma.ventas.deleteMany();
-    await prisma.rol.deleteMany();
-    await prisma.producto.deleteMany();
-    await prisma.materia_prima.deleteMany();
-    await prisma.insumo.deleteMany();
-    await prisma.empleado.deleteMany();
-    await prisma.domicilio.deleteMany();
-    await prisma.cliente.deleteMany();
-    await prisma.ciudad.deleteMany();
-    await prisma.personas.deleteMany();
-  
+
     // Crea 3 registros únicos para cada tabla
     // Tabla ciudad
     const ciudad1 = await prisma.ciudad.create({

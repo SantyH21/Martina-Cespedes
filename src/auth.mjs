@@ -1,5 +1,10 @@
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+// Importar variables de entorno
+import dotenv from 'dotenv';
+dotenv.config();
+
+// Importar módulos
+import jwt from 'jsonwebtoken';
+
 
 const authenticateToken = (req, res, next) => {
   const token = req.header('Authorization')?.split(' ')[1];
@@ -13,13 +18,15 @@ const authenticateToken = (req, res, next) => {
 };
 
 function generateAccessToken(username) {
-    const secretKey = process.env.SECRET_KEY; // Ensure this environment variable is set
+    const secretKey = process.env.JWT_SECRET;
+
     if (!secretKey) {
         throw new Error('Secret key is missing');
     }
     return jwt.sign({ username }, secretKey, { expiresIn: '1800s' });
 }
+const auth = {
+  authenticateToken,generateAccessToken
+}
 
-
-
-module.exports = {authenticateToken,generateAccessToken};
+export default auth;
