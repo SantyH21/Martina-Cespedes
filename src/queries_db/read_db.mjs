@@ -46,10 +46,10 @@ async function getRecordsByAttribute(tableName, attribute, value) {
 }
 
 //Ejemplo de uso
-// getAllRecords('personas')
-//   .then(records => console.log(records))
-//   .catch(error => console.error(error));
-
-getRecordsByAttribute('telefono', 'numero_telefono', '1234567890')
-  .then(record_unico => console.log(record_unico))
+ getAllRecords('personas')
+  .then(records => console.log(records))
   .catch(error => console.error(error));
+
+//getRecordsByAttribute('telefono', 'numero_telefono', '1234567890')
+  //.then(record_unico => console.log(record_unico))
+  //.catch(error => console.error(error));
