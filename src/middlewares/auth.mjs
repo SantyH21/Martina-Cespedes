@@ -23,7 +23,7 @@ function generateAccessToken(username) {
     if (!secretKey) {
         throw new Error('Secret key is missing');
     }
-    return jwt.sign({ username }, secretKey, { expiresIn: '1800s' });
+    return jwt.sign({ username }, secretKey, { expiresIn: '10h' });
 }
 const auth = {
   authenticateToken,generateAccessToken

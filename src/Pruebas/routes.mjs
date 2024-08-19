@@ -5,7 +5,7 @@ dotenv.config();
 // Importar módulos
 import express from 'express';
 import bodyParser from 'body-parser';
-import auth from './auth.mjs';
+import auth from '../middlewares/auth.mjs';
 
 // Crear instancia de express
 const app = express();
