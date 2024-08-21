@@ -20,9 +20,9 @@ app.use(express.json());
 app.use(cors());
 
 // 4. Rutas (o endpoints)
-//app.use('/api/v1', mainRouter);
+app.use('/api/v1', mainRouter);
 
 // 5. Loop del servidor
 app.listen(PORT, () => {
-  console.log(`🥟 El servidor está funcionando en el puerto ${PORT}`);
+  console.log(`El servidor está funcionando en el puerto ${PORT}`);
 });
