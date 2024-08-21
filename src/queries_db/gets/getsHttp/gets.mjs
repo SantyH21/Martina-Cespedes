@@ -1,54 +1,60 @@
 import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
+class GetController {
+  constructor() {
+    this.prisma = new PrismaClient();
+  }
 
-async function getAllRecords(req, res) {
-  const { tableName } = req.params;
+  async getAllRecords(req, res) {
+    const { tableName } = req.params;
 
-  try {
-    // Verifica si el nombre de la tabla es válido
-    if (!prisma[tableName]) {
-      return res.status(400).json({ error: `Table ${tableName} does not exist.` });
+    try {
+      // Verifica si el nombre de la tabla es válido
+      if (!this.prisma[tableName]) {
+        return res.status(400).json({ error: `Tabla ${tableName} no existe.` });
+      }
+
+      // Utiliza el cliente Prisma para obtener todos los registros de la tabla
+      const records = await this.prisma[tableName].findMany();
+      return res.status(200).json(records);
+    } catch (error) {
+      console.error(`Error buscando registros de la tabla ${tableName}:`, error);
+      return res.status(500).json({ error: `Error buscando registros de la tabla ${tableName}.`, details: error.message });
+    } finally {
+      await this.prisma.$disconnect();
     }
+  }
 
-    // Utiliza el cliente Prisma para obtener todos los registros de la tabla
-    const records = await prisma[tableName].findMany();
-    return res.status(200).json(records);
-  } catch (error) {
-    console.error(`Error devolviendo registro de: ${tableName}:`, error);
-    return res.status(500).json({ error: `Error devolviendo registro de: ${tableName}.`, details: error.message });
-  } finally {
-    await prisma.$disconnect();
+  async getRecordsByAttribute(req, res) {
+    const { tableName, attribute, value } = req.params;
+
+    try {
+      // Verifica si el nombre de la tabla es válido
+      if (!this.prisma[tableName]) {
+        return res.status(400).json({ error: `Tabla ${tableName} no existe.` });
+      }
+
+      // Construye el filtro dinámico
+      const filter = {};
+      filter[attribute] = value;
+
+      // Utiliza el cliente Prisma para obtener los registros que coinciden con el filtro
+      const records = await this.prisma[tableName].findMany({
+        where: filter,
+      });
+
+      if (records.length === 0) {
+        return res.status(404).json({ message: `No se encontraron registros en la tabla ${tableName} donde ${attribute} es ${value}.` });
+      }
+
+      return res.status(200).json(records);
+    } catch (error) {
+      console.error(`No se encontraron registros en la tabla ${tableName} donde ${attribute} es ${value}:`, error);
+      return res.status(500).json({ error: `No se encontraron registros en la tabla ${tableName} donde ${attribute} es ${value}`, details: error.message });
+    } finally {
+      await this.prisma.$disconnect();
+    }
   }
 }
 
-async function getRecordsByAttribute(req, res) {
-  const { tableName, attribute, value } = req.params;
-
-  try {
-    // Verifica si el nombre de la tabla es válido
-    if (!prisma[tableName]) {
-      return res.status(400).json({ error: `Tabla ${tableName} no existe.` });
-    }
-
-    // Construye el filtro dinámico
-    const filter = {};
-    filter[attribute] = value;
-
-    // Utiliza el cliente Prisma para obtener los registros que coinciden con el filtro
-    const records = await prisma[tableName].findMany({
-      where: filter,
-    });
-
-    if (records.length === 0) {
-      return res.status(404).json({ message: `No hay registros en ${tableName} donde ${attribute} es ${value}.` });
-    }
-
-    return res.status(200).json(records);
-  } catch (error) {
-    console.error(`Error devolviendo registro de: ${tableName} donde ${attribute} es ${value}:`, error);
-    return res.status(500).json({ error: `Error devolviendo registro de: ${tableName} donde ${attribute} es ${value}.`, details: error.message });
-  } finally {
-    await prisma.$disconnect();
-  }
-}
+export default GetController;

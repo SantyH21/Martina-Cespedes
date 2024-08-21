@@ -5,28 +5,25 @@ dotenv.config();
 // Importar módulos
 import jwt from 'jsonwebtoken';
 
+class AuthController {
+  authenticateToken(req, res, next) {
+    const token = req.header('Authorization')?.split(' ')[1];
+    if (!token) return res.sendStatus(401);
 
-const authenticateToken = (req, res, next) => {
-  const token = req.header('Authorization')?.split(' ')[1];
-  if (!token) return res.sendStatus(401);
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+      if (err) return res.sendStatus(403);
+      req.user = user;
+      next();
+    });
+  }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
-};
-
-function generateAccessToken(username) {
+  generateAccessToken(username) {
     const secretKey = process.env.JWT_SECRET;
 
     if (!secretKey) {
-        throw new Error('Secret key is missing');
+      throw new Error('Secret key is missing');
     }
     return jwt.sign({ username }, secretKey, { expiresIn: '10h' });
+  }
 }
-const auth = {
-  authenticateToken,generateAccessToken
-}
-
-export default auth;
+export default new AuthController();
