@@ -96,18 +96,24 @@ async function seed() {
       data: {
         cargo_emp: 'Cargo 1',
         id_persona: persona1.id_persona,
+        contrasena_empleado: 'Contraseña 1',
+        mail_empleado: 'mail1@example.com',
       },
     });
     const empleado2 = await prisma.empleado.create({
       data: {
         cargo_emp: 'Cargo 2',
         id_persona: persona2.id_persona,
+        contrasena_empleado: 'Contraseña 2',
+        mail_empleado: 'mail2@example.com',
       },
     });
     const empleado3 = await prisma.empleado.create({
       data: {
         cargo_emp: 'Cargo 3',
         id_persona: persona3.id_persona,
+        contrasena_empleado: 'Contraseña 3',
+        mail_empleado: 'mail3@example.com',
       },
     });
   
@@ -161,33 +167,7 @@ async function seed() {
         nom_prod: 'Producto 3',
       },
     });
-  
-    // Tabla rol
-    const rol1 = await prisma.rol.create({
-      data: {
-        tipo_rol: 'Rol 1',
-        contr_rol: 'Contraseña 1',
-        mail_rol: 'mail1@example.com',
-        id_empleado: empleado1.id_empleado,
-      },
-    });
-    const rol2 = await prisma.rol.create({
-      data: {
-        tipo_rol: 'Rol 2',
-        contr_rol: 'Contraseña 2',
-        mail_rol: 'mail2@example.com',
-        id_empleado: empleado2.id_empleado,
-      },
-    });
-    const rol3 = await prisma.rol.create({
-      data: {
-        tipo_rol: 'Rol 3',
-        contr_rol: 'Contraseña 3',
-        mail_rol: 'mail3@example.com',
-        id_empleado: empleado3.id_empleado,
-      },
-    });
-  
+   
     // Tabla stock
     const stock1 = await prisma.stock.create({
       data: {
@@ -239,6 +219,7 @@ async function seed() {
         pendiente: 'No',
         id_cliente: cliente1.id_cliente,
         id_empleado: empleado1.id_empleado,
+
       },
     });
     const ventas2 = await prisma.ventas.create({

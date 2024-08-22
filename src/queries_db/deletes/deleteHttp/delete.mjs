@@ -1,11 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 
-class DeleteController {
+export class DeleteController {
   constructor() {
     this.prisma = new PrismaClient();
   }
 
-  async deleteAllRecords(req, res) {
+  static async deleteAllRecords(req, res) {
     const table = req.params.table;
 
     try {
@@ -20,7 +20,7 @@ class DeleteController {
     }
   }
 
-  async deleteRecordById(req, res) {
+  static async deleteRecordById(req, res) {
     const table = req.params.table;
     const idField = req.params.idField;
     const idValue = req.params.idValue;
@@ -40,5 +40,4 @@ class DeleteController {
   }
 }
 
-export default DeleteController;
 

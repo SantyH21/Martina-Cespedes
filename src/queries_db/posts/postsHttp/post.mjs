@@ -1,11 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 
-class PostController {
+export class PostController {
   constructor() {
     this.prisma = new PrismaClient();
   }
 
-  async createCiudad(req, res) {
+  static async createCiudad(req, res) {
     const data = req.body;
     try {
       const exists = await this.prisma.ciudad.findFirst({
@@ -24,7 +24,7 @@ class PostController {
     }
   }
 
-  async createCliente(req, res) {
+  static async createCliente(req, res) {
     const data = req.body;
 
     try {
@@ -50,7 +50,7 @@ class PostController {
     }
   }
 
-  async createDomicilio(req, res) {
+  static async createDomicilio(req, res) {
     const data = req.body;
 
     try {
@@ -75,7 +75,7 @@ class PostController {
     }
   }
 
-  async createEmpleado(req, res) {
+  static async createEmpleado(req, res) {
     const data = req.body;
 
     try {
@@ -98,7 +98,7 @@ class PostController {
     }
   }
 
-  async createInsumo(req, res) {
+  static async createInsumo(req, res) {
     const data = req.body;
 
     try {
@@ -121,7 +121,7 @@ class PostController {
     }
   }
 
-  async createMateriaPrima(req, res) {
+  static async createMateriaPrima(req, res) {
     const data = req.body;
 
     try {
@@ -144,7 +144,7 @@ class PostController {
     }
   }
 
-  async createPersonas(req, res) {
+  static async createPersonas(req, res) {
     const data = req.body;
 
     try {
@@ -167,7 +167,7 @@ class PostController {
     }
   }
 
-  async createProducto(req, res) {
+  static async createProducto(req, res) {
     const data = req.body;
 
     try {
@@ -189,7 +189,7 @@ class PostController {
     }
   }
 
-  async createRol(req, res) {
+  static async createRol(req, res) {
     const data = req.body;
 
     try {
@@ -212,7 +212,7 @@ class PostController {
     }
   }
 
-  async createStock(req, res) {
+  static async createStock(req, res) {
     const data = req.body;
 
     try {
@@ -235,7 +235,7 @@ class PostController {
     }
   }
 
-  async createTelefono(req, res) {
+  static async createTelefono(req, res) {
     const data = req.body;
 
     try {
@@ -258,7 +258,7 @@ class PostController {
     }
   }
 
-  async createVentas(req, res) {
+  static async createVentas(req, res) {
     const data = req.body;
 
     try {
@@ -282,6 +282,4 @@ class PostController {
     }
   }
 }
-
-export default PostController;
 

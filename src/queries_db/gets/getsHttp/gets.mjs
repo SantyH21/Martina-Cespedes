@@ -1,11 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 
-class GetController {
+export class GetController {
   constructor() {
     this.prisma = new PrismaClient();
   }
 
-  async getAllRecords(req, res) {
+  static async getAllRecords(req, res) {
     const { tableName } = req.params;
 
     try {
@@ -25,7 +25,7 @@ class GetController {
     }
   }
 
-  async getRecordsByAttribute(req, res) {
+  static async getRecordsByAttribute(req, res) {
     const { tableName, attribute, value } = req.params;
 
     try {
@@ -57,4 +57,3 @@ class GetController {
   }
 }
 
-export default GetController;

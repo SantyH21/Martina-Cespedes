@@ -36,12 +36,13 @@ model domicilio {
 }
 
 model empleado {
-  id_empleado Int       @id @default(autoincrement())
-  cargo_emp   String?   @db.VarChar(20)
-  id_persona  Int?
-  personas    personas? @relation(fields: [id_persona], references: [id_persona], onDelete: NoAction, onUpdate: NoAction)
-  rol         rol[]
-  ventas      ventas[]
+  id_empleado         Int       @id @default(autoincrement())
+  cargo_emp           String?   @db.VarChar(20)
+  contrasena_empleado String?   @db.VarChar(20)
+  mail_empleado       String?   @db.VarChar(40)
+  id_persona          Int?
+  personas            personas? @relation(fields: [id_persona], references: [id_persona], onDelete: NoAction, onUpdate: NoAction)
+  ventas              ventas[]
 }
 
 model insumo {
@@ -78,15 +79,6 @@ model producto {
   materia_prima materia_prima[]
   ventas        ventas?         @relation(fields: [id_ventas], references: [id_ventas], onDelete: NoAction, onUpdate: NoAction, map: "fk_prod_ventas")
   stock         stock[]
-}
-
-model rol {
-  id_rol      Int       @id @default(autoincrement())
-  tipo_rol    String?   @db.VarChar(20)
-  contr_rol   String?   @db.VarChar(20)
-  mail_rol    String?   @db.VarChar(40)
-  id_empleado Int?
-  empleado    empleado? @relation(fields: [id_empleado], references: [id_empleado], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model stock {

@@ -16,9 +16,6 @@ async function deleteAllRecords() {
     // Eliminar registros de la tabla 'stock'
     await prisma.stock.deleteMany({});
 
-    // Eliminar registros de la tabla 'rol'
-    await prisma.rol.deleteMany({});
-
     // Eliminar registros de la tabla 'telefono'
     await prisma.telefono.deleteMany({});
 

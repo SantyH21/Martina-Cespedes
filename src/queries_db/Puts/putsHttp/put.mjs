@@ -1,11 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 
-class PutController {
+export class PutController {
   constructor() {
     this.prisma = new PrismaClient();
   }
 
-  async updateRecord(req, res) {
+  static async updateRecord(req, res) {
     const { table, searchData, updateData } = req.body;
 
     try {
@@ -37,5 +37,3 @@ class PutController {
     }
   }
 }
-
-export default PutController;
