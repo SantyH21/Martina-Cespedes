@@ -3,7 +3,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import './app_neon.mjs'
 
-//import { mainRouter } from './routes/mainRouter.js';
+import { mainRouters } from './rutas/mainRoutes.mjs';
 
 console.clear();
 console.log('⌛ Inicializando servidor...');
@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(cors());
 
 // 4. Rutas (o endpoints)
-app.use('/api/v1', mainRouter);
+app.use('/api/v1', mainRouters);
 
 // 5. Loop del servidor
 app.listen(PORT, () => {
