@@ -2,6 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import './app_neon.mjs'
+//node ./src/index.mjs
 
 import { mainRouters } from './rutas/mainRoutes.mjs';
 
