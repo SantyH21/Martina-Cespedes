@@ -45,7 +45,7 @@ async function getRecordsByAttribute(tableName, attribute, value) {
   }
 }
 
-async function getEmpleadoByCredentials(mail_empleado, contrasena_empleado) {
+export async function getEmpleadoByCredentials(mail_empleado, contrasena_empleado) {
   try {
     // Verifica que ambos valores se proporcionen
     if (!mail_empleado || !contrasena_empleado) {
@@ -71,9 +71,9 @@ async function getEmpleadoByCredentials(mail_empleado, contrasena_empleado) {
 
 
 //Ejemplo de uso
- getAllRecords('personas')
-  .then(records => console.log(records))
-  .catch(error => console.error(error));
+ //getAllRecords('personas')
+  //.then(records => console.log(records))
+  //.catch(error => console.error(error));
 
 //getRecordsByAttribute('telefono', 'numero_telefono', '1234567890')
   //.then(record_unico => console.log(record_unico))
