@@ -7,5 +7,5 @@ export const authRouter = express.Router();
 // /api/v1/auth/login
 authRouter.post(
   '/login',
-  AuthController.generateAccessToken
+  AuthController.generateAccessToken,
 );

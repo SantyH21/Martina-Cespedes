@@ -4,7 +4,7 @@ dotenv.config();
 
 // Importar módulos
 import jwt from 'jsonwebtoken';
-import getEmpleadoByCredentials from '../queries_db/gets/read-db'
+import { getEmpleadoByCredentials } from '../queries_db/gets/read-db/read_db.mjs';
 
 export class AuthController {
   static async authenticateToken(req, res, next) {
