@@ -5,4 +5,4 @@ import { empleadosRouter } from './routes/empleadosRouter.mjs';
 export const mainRouters = express.Router();
 
 mainRouters.use('/auth', authRouter);
-mainRouters.use('/empleados',empleadosRouter);
+mainRouters.use('/empleado',empleadosRouter);
