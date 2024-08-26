@@ -49,6 +49,8 @@ model insumo {
   id_insumo        Int       @id @default(autoincrement())
   nom_insumo       String?   @db.VarChar(30)
   fecha_ing_insumo DateTime? @db.Date  @default(now())
+  descripcion      String?
+  cantidad         Int?
   id_prod          Int?
   producto         producto? @relation(fields: [id_prod], references: [id_prod], onDelete: NoAction, onUpdate: NoAction)
 }
@@ -57,6 +59,9 @@ model materia_prima {
   id_mat_prima        Int       @id @default(autoincrement())
   nom_mat_prima       String?   @db.VarChar(30)
   fecha_ing_mat_prima DateTime? @db.Date @default(now())
+  medida               String?   @db.VarChar(20)
+  cantidad            Int?
+  descripcion         String?
   id_prod             Int?
   producto            producto? @relation(fields: [id_prod], references: [id_prod], onDelete: NoAction, onUpdate: NoAction)
 }
@@ -97,14 +102,15 @@ model telefono {
 }
 
 model ventas {
-  id_ventas   Int        @id @default(autoincrement())
-  facturado   String?    @db.VarChar(20)
-  cobrado     String?    @db.VarChar(20)
-  pendiente   String?    @db.VarChar(20)
-  fecha_fac   DateTime?  @db.Date   @default(now())
-  id_cliente  Int?
-  id_empleado Int?
-  producto    producto[]
-  cliente     cliente?   @relation(fields: [id_cliente], references: [id_cliente], onDelete: NoAction, onUpdate: NoAction, map: "fk_cliente_ventas")
-  empleado    empleado?  @relation(fields: [id_empleado], references: [id_empleado], onDelete: NoAction, onUpdate: NoAction, map: "fk_emp_ventas")
+  id_ventas         Int        @id @default(autoincrement())
+  facturado         String?    @db.VarChar(20)
+  cobrado           String?    @db.VarChar(20)
+  pendiente         String?    @db.VarChar(20)
+  fecha_fac         DateTime?  @db.Date   @default(now())
+  cantidad_producto Int?
+  id_cliente        Int?
+  id_empleado       Int?
+  producto          producto[]
+  cliente           cliente?   @relation(fields: [id_cliente], references: [id_cliente], onDelete: NoAction, onUpdate: NoAction, map: "fk_cliente_ventas")
+  empleado          empleado?  @relation(fields: [id_empleado], references: [id_empleado], onDelete: NoAction, onUpdate: NoAction, map: "fk_emp_ventas")
 }

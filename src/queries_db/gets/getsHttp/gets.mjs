@@ -1,9 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 
+
+
 export class GetController {
-  constructor() {
-    this.prisma = new PrismaClient();
-  }
+  static prisma = new PrismaClient();
 
   static async getAllRecords(req, res) {
     const { tableName } = req.params;
