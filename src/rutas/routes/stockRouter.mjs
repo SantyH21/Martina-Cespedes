@@ -5,4 +5,4 @@ export const stockRouter = express.Router();
 
 // GET ----------------------------
 
-stockRouter.get('/', GetController.getAllRecordsStock);
+stockRouter.get('/', GetController.getAllRecordsStock);//http://localhost:3000/api/ver_stock

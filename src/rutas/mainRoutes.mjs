@@ -5,6 +5,7 @@ import { insumoRouter } from './routes/insumoRouter.mjs';
 import { materia_primaRouter } from './routes/materia_primaRouter.mjs';
 import { stockRouter } from './routes/stockRouter.mjs';
 import { clienteRouter } from './routes/clienteRouter.mjs';
+import { ventasRouter } from './routes/ventasRouter.mjs';
 
 
 export const mainRouters = express.Router();
@@ -15,3 +16,4 @@ mainRouters.use('/ver_insumo',insumoRouter);
 mainRouters.use('/ver_materia_prima',materia_primaRouter);
 mainRouters.use('/ver_stock',stockRouter);
 mainRouters.use('/ver_clientes',clienteRouter);
+mainRouters.use('/movimientos',ventasRouter);

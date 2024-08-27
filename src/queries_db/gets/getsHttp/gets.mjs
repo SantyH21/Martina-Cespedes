@@ -134,11 +134,7 @@ export class GetController {
           id_stock: true,
           nom_prod_stock: true,
           cant_stock: true,
-          producto: {
-            select: {
-              nom_prod: true,
-            },
-          },
+         
         },
       });
 
@@ -151,66 +147,95 @@ export class GetController {
     }
   }
  
-    // Función para obtener todos los registros de la tabla cliente
-    static async getAllRecordsClientes(req, res) {
-      try {
-        // Utiliza el cliente Prisma para obtener todos los registros de la tabla cliente
-        const records = await GetController.prisma.cliente.findMany({
-          select: {
-            id_cliente: true,
-            segmento: true,
-            nom_resp_cliente: true,
-            estado_cliente: true,
-            coment_cliente: true,
-            ventas: {
-              select: {
-                id_ventas: true,
-              },
-            },
-            personas: {
-              select: {
-                domicilio: {
-                  select: {
-                    numero_dom: true,
-                    calle_dom: true,
-                    ciudad: {
-                      select: {
-                        nombre_ciudad: true,
-                      },
+  static async getAllRecordsClientes(req, res) {
+    try {
+      const records = await GetController.prisma.cliente.findMany({
+        select: {
+          id_cliente: true,
+          segmento: true,
+          nom_resp_cliente: true,
+          estado_cliente: true,
+          coment_cliente: true,
+          personas: {
+            select: {
+              nom_persona: true,
+              apel_persona: true,
+              domicilio: {
+                select: {
+                  numero_dom: true,
+                  calle_dom: true,
+                  ciudad: {
+                    select: {
+                      nombre_ciudad: true,
                     },
                   },
                 },
-                telefono: {
-                  select: {
-                    numero_telefono: true, // Este campo es BigInt
-                  },
+              },
+              telefono: {
+                select: {
+                  numero_telefono: true,
                 },
               },
             },
           },
-        });
+        },
+      });
   
-        // Serializa los BigInt a string
-        const serializedRecords = records.map(record => ({
-          ...record,
-          personas: {
-            ...record.personas,
-            telefono: record.personas?.telefono?.map(t => ({
-              ...t,
-              numero_telefono: t.numero_telefono?.toString(), // Convierte BigInt a String
-            })),
-          },
-        }));
+      // Serializa los BigInt a string
+      const serializedRecords = records.map(record => ({
+        ...record,
+        personas: {
+          ...record.personas,
+          telefono: record.personas?.telefono?.map(t => ({
+            ...t,
+            numero_telefono: t.numero_telefono?.toString(), // Convierte BigInt a String
+          })),
+        },
+      }));
   
-        return res.status(200).json(serializedRecords);
-      } catch (error) {
-        console.error('Error buscando registros de cliente:', error);
-        return res.status(500).json({ error: 'Error buscando registros de cliente.', details: error.message });
-      } finally {
-        await GetController.prisma.$disconnect(); // Desconecta el cliente Prisma
-      }
+      return res.status(200).json(serializedRecords);
+    } catch (error) {
+      console.error('Error buscando registros de cliente:', error);
+      return res.status(500).json({ error: 'Error buscando registros de cliente.', details: error.message });
+    } finally {
+      await GetController.prisma.$disconnect(); // Desconecta el cliente Prisma
     }
   }
   
+     // Función para obtener todos los registros de la tabla ventas
+    static async getAllRecordsVentas(req, res) {
+    try {
+      const records = await GetController.prisma.ventas.findMany({
+        select: {
+          id_ventas: true,
+          facturado: true,
+          cobrado: true,
+          pendiente: true,
+          fecha_fac: true,
+          cantidad_producto: true,
+          cliente: {
+            select: {
+              nom_resp_cliente: true,
+            },
+          },
+          empleado: {
+            select: {
+              personas: {
+                select: {
+                  nom_persona: true,
+                },
+              },
+            },
+          },
+        },
+      });
 
-  
+      return res.status(200).json(records);
+    } catch (error) {
+      console.error('Error buscando registros de ventas:', error);
+      return res.status(500).json({ error: 'Error buscando registros de ventas.', details: error.message });
+    } finally {
+      await GetController.prisma.$disconnect();
+    }
+  }
+}
