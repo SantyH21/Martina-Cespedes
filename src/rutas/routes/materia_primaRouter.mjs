@@ -9,5 +9,5 @@ export const materia_primaRouter = express.Router();
 materia_primaRouter.get('/', GetController.getAllRecordsMateriaPrima);//http://localhost:3000/api/ver_materia_prima
 
 
-// PUT ------------------
+// POST ------------------
 materia_primaRouter.post('/crear_materia_prima',PostController.createMateriaPrima);

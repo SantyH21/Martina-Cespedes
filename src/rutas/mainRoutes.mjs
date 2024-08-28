@@ -19,3 +19,5 @@ mainRouters.use('/movimientos',ventasRouter);
 
 //-----puts routes----
 mainRouters.use('/produccion',materia_primaRouter);
+mainRouters.use('/produccion',insumoRouter);
+mainRouters.use('/empleado',empleadosRouter);
