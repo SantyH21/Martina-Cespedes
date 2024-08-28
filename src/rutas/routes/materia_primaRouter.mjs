@@ -10,4 +10,4 @@ materia_primaRouter.get('/', GetController.getAllRecordsMateriaPrima);//http://l
 
 
 // PUT ------------------
-materia_primaRouter.put('/crear_materia_prima',PostController.createMateriaPrima);
+materia_primaRouter.post('/crear_materia_prima',PostController.createMateriaPrima);
