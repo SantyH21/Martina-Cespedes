@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 
 export class GetController {
-  static prisma = new PrismaClient(); // Propiedad estática para PrismaClient
+  static prisma = new PrismaClient(); 
 
   // Función para obtener todos los registros de empleados con datos asociados de personas
   static async getAllRecordsEmpleados(req, res) {

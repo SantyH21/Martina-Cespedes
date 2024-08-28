@@ -7,9 +7,8 @@ import { stockRouter } from './routes/stockRouter.mjs';
 import { clienteRouter } from './routes/clienteRouter.mjs';
 import { ventasRouter } from './routes/ventasRouter.mjs';
 
-
 export const mainRouters = express.Router();
-
+//----gets routes-------
 mainRouters.use('/auth', authRouter);
 mainRouters.use('/empleado',empleadosRouter);
 mainRouters.use('/ver_insumo',insumoRouter);
@@ -17,3 +16,6 @@ mainRouters.use('/ver_materia_prima',materia_primaRouter);
 mainRouters.use('/ver_stock',stockRouter);
 mainRouters.use('/ver_clientes',clienteRouter);
 mainRouters.use('/movimientos',ventasRouter);
+
+//-----puts routes----
+mainRouters.use('/produccion',materia_primaRouter);
