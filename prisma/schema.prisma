@@ -77,13 +77,12 @@ model personas {
 }
 
 model producto {
-  id_prod       Int             @id @default(autoincrement())
-  nom_prod      String?         @db.VarChar(30)
-  id_ventas     Int?
+  id_prod       Int               @id @default(autoincrement())
+  nom_prod      String?           @db.VarChar(30)
   insumo        insumo[]
   materia_prima materia_prima[]
-  ventas        ventas?         @relation(fields: [id_ventas], references: [id_ventas], onDelete: NoAction, onUpdate: NoAction, map: "fk_prod_ventas")
   stock         stock[]
+  ventas        VentaProducto[]
 }
 
 model stock {
@@ -102,15 +101,22 @@ model telefono {
 }
 
 model ventas {
-  id_ventas         Int        @id @default(autoincrement())
-  facturado         String?    @db.VarChar(20)
-  cobrado           String?    @db.VarChar(20)
-  pendiente         String?    @db.VarChar(20)
-  fecha_fac         DateTime?  @db.Date   @default(now())
+  id_ventas         Int               @id @default(autoincrement())
+  facturado         String?           @db.VarChar(20)
+  cobrado           String?           @db.VarChar(20)
+  pendiente         String?           @db.VarChar(20)
+  fecha_fac         DateTime?         @db.Date   @default(now())
   cantidad_producto Int?
   id_cliente        Int?
   id_empleado       Int?
-  producto          producto[]
-  cliente           cliente?   @relation(fields: [id_cliente], references: [id_cliente], onDelete: NoAction, onUpdate: NoAction, map: "fk_cliente_ventas")
-  empleado          empleado?  @relation(fields: [id_empleado], references: [id_empleado], onDelete: NoAction, onUpdate: NoAction, map: "fk_emp_ventas")
+  cliente           cliente?          @relation(fields: [id_cliente], references: [id_cliente], onDelete: NoAction, onUpdate: NoAction, map: "fk_cliente_ventas")
+  empleado          empleado?         @relation(fields: [id_empleado], references: [id_empleado], onDelete: NoAction, onUpdate: NoAction, map: "fk_emp_ventas")
+  productos         VentaProducto[]
+}
+model VentaProducto {
+  id                Int       @id @default(autoincrement())
+  id_ventas         Int
+  id_prod           Int
+  ventas            ventas    @relation(fields: [id_ventas], references: [id_ventas])
+  producto          producto  @relation(fields: [id_prod], references: [id_prod])
 }

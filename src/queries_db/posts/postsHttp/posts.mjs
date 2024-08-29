@@ -117,5 +117,130 @@ export class PostController {
       await PostController.prisma.$disconnect();
     }
   }
-}
 
+    static async createCliente(req, res) {
+      try {
+        const { segmento, nom_resp_cliente, estado_cliente, coment_cliente, nom_persona, apel_persona, numero_dom, calle_dom, nombre_ciudad, numero_telefono } = req.body;
+  
+        // Verifica si ya existe un cliente con el mismo nombre y apellido
+        const existingCliente = await PostController.prisma.cliente.findFirst({
+          where: {
+            personas: {
+              nom_persona,
+              apel_persona,
+            },
+          },
+          include: {
+            personas: true,
+          },
+        });
+  
+        if (existingCliente) {
+          return res.status(400).json({ error: 'El cliente ya existe.' });
+        }
+  
+        // Inserta un nuevo registro en la tabla cliente y personas
+        const newCliente = await PostController.prisma.cliente.create({
+          data: {
+            segmento,
+            nom_resp_cliente,
+            estado_cliente,
+            coment_cliente,
+            personas: {
+              create: {
+                nom_persona,
+                apel_persona,
+                domicilio: {
+                  create: {
+                    numero_dom,
+                    calle_dom,
+                    ciudad: {
+                      create: {
+                        nombre_ciudad,
+                      },
+                    },
+                  },
+                },
+                telefono: {
+                  create: {
+                    numero_telefono: BigInt(numero_telefono), // Convierte el número a BigInt
+                  },
+                },
+              },
+            },
+          },
+          include: {
+            personas: {
+              include: {
+                domicilio: {
+                  include: {
+                    ciudad: true,
+                  },
+                },
+                telefono: true,
+              },
+            },
+          },
+        });
+  
+        // Serializa los BigInt a string
+        const serializedCliente = {
+          ...newCliente,
+          personas: {
+            ...newCliente.personas,
+            telefono: newCliente.personas?.telefono?.map(t => ({
+              ...t,
+              numero_telefono: t.numero_telefono?.toString(), // Convierte BigInt a String
+            })),
+          },
+        };
+  
+        return res.status(201).json(serializedCliente);
+      } catch (error) {
+        console.error('Error al crear cliente:', error);
+        return res.status(500).json({ error: 'Error al crear cliente.', details: error.message });
+      } finally {
+        await PostController.prisma.$disconnect();
+      }
+    }
+
+    static async createVenta(req, res) {
+      try {
+        const { facturado, cobrado, pendiente, fecha_fac, cantidad_producto, id_cliente, id_empleado, productos } = req.body;
+    
+        // Validar la lista de productos
+        if (!Array.isArray(productos) || productos.length === 0) {
+          return res.status(400).json({ error: 'La lista de productos es inválida o está vacía.' });
+        }
+    
+        // Crear la venta
+        const nuevaVenta = await PostController.prisma.ventas.create({
+          data: {
+            facturado,
+            cobrado,
+            pendiente,
+            fecha_fac: new Date(fecha_fac),
+            cantidad_producto,
+            cliente: { connect: { id_cliente } },
+            empleado: { connect: { id_empleado } },
+          }
+        });
+    
+        // Crear las entradas en la tabla intermedia VentaProducto
+        const ventaProductoData = productos.map(id_prod => ({
+          id_ventas: nuevaVenta.id_ventas,
+          id_prod
+        }));
+    
+        await PostController.prisma.ventaProducto.createMany({
+          data: ventaProductoData
+        });
+    
+        res.status(201).json(nuevaVenta);
+      } catch (error) {
+        console.error('Error al crear la venta:', error);
+        res.status(500).json({ error: 'Error al crear la venta' });
+      }
+    }
+    
+  }
