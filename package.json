@@ -19,7 +19,9 @@
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
-    "ws": "^8.17.0"
+    "ws": "^8.17.0",
+    "@types/ws": "^8.5.10",
+    "prisma": "^5.13.0"
   },
   "devDependencies": {
     "@types/ws": "^8.5.10",
