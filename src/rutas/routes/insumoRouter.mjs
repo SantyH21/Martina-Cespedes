@@ -9,7 +9,7 @@ export const insumoRouter = express.Router();
 insumoRouter.get('/', GetController.getAllRecordsInsumos);//http://localhost:3000/api/ver_insumo
 
 // POST ------------------
-insumoRouter.post('/crear_insumo',PostController.createInsumo);//0http://localhost:3000/api/produccion/crear_insumo
+insumoRouter.post('/crear_insumo',PostController.createInsumo);//http://localhost:3000/api/produccion/crear_insumo
 
 // DELETE -----
 insumoRouter.delete('/:id_insumo',DeleteController.deleteInsumo);//http://localhost:3000/api/borrar_insumo/1
