@@ -45,24 +45,24 @@ async function getRecordsByAttribute(tableName, attribute, value) {
   }
 }
 
-export async function getEmpleadoByCredentials(mail_empleado, contrasena_empleado) {
+export async function getEmpleadoByCredentials( mail, password) {
   try {
     // Verifica que ambos valores se proporcionen
-    if (!mail_empleado || !contrasena_empleado) {
-      throw new Error("Los valores 'mail_empleado' y 'contrasena_empleado' son requeridos.");
+    if (!mail || !password) {
+      throw new Error("Los valores 'mail empleado' y 'contrasena empleado' son requeridos.");
     }
 
     // Utiliza el cliente Prisma para obtener los registros que coincidan con el mail y la contraseña
     const empleado = await prisma.empleado.findMany({
       where: {
-        mail_empleado: mail_empleado,
-        contrasena_empleado: contrasena_empleado
+        mail_empleado: mail,
+        contrasena_empleado: password
       }
     });
 
     return empleado;
   } catch (error) {
-    console.error(`Error extrayendo empleado con mail ${mail_empleado}`, error);
+    console.error(`Error extrayendo empleado con mail ${mail}`, error);
     throw error;
   } finally {
     await prisma.$disconnect();
