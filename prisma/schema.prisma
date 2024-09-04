@@ -38,7 +38,7 @@ model domicilio {
 model empleado {
   id_empleado         Int       @id @default(autoincrement())
   cargo_emp           String?   @db.VarChar(20)
-  contrasena_empleado String?   @db.VarChar(20)
+  contrasena_empleado String?   @db.VarChar(40)
   mail_empleado       String?   @db.VarChar(40)
   id_persona          Int?
   personas            personas? @relation(fields: [id_persona], references: [id_persona], onDelete: NoAction, onUpdate: NoAction)
