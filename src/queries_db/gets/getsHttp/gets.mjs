@@ -203,39 +203,44 @@ export class GetController {
   }
   
      // Función para obtener todos los registros de la tabla ventas
-    static async getAllRecordsVentas(req, res) {
-    try {
-      const records = await GetController.prisma.ventas.findMany({
-        select: {
-          id_ventas: true,
-          facturado: true,
-          cobrado: true,
-          pendiente: true,
-          fecha_fac: true,
-          cantidad_producto: true,
-          cliente: {
-            select: {
-              nom_resp_cliente: true,
+     static async getAllRecordsVentas(req, res) {
+      try {
+        const records = await GetController.prisma.ventas.findMany({
+          select: {
+            id_ventas: true,
+            facturado: true,
+            cobrado: true,
+            pendiente: true,
+            fecha_fac: true,
+            cantidad_producto: true,
+            cliente: {
+              select: {
+                nom_resp_cliente: true,
+                personas: {
+                  select: {
+                    nom_persona: true,
+                    apel_persona: true,
+                  },
+                },
+              },
             },
-          },
-          empleado: {
-            select: {
-              personas: {
-                select: {
-                  nom_persona: true,
+            empleado: {
+              select: {
+                personas: {
+                  select: {
+                    nom_persona: true,
+                  },
                 },
               },
             },
           },
-        },
-      });
-
-      return res.status(200).json(records);
-    } catch (error) {
-      console.error('Error buscando registros de ventas:', error);
-      return res.status(500).json({ error: 'Error buscando registros de ventas.', details: error.message });
-    } finally {
-      await GetController.prisma.$disconnect();
+        });
+    
+        return res.status(200).json(records);
+      } catch (error) {
+        console.error('Error al obtener registros de ventas:', error);
+        return res.status(500).json({ error: 'Error al obtener registros de ventas.' });
+      }
     }
-  }
+    
 }
