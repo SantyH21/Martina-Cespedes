@@ -125,82 +125,82 @@ export class GetController {
     }
   
 
-  // Función para obtener todos los registros de la tabla stock
-  static async getAllRecordsStock(req, res) {
-    try {
-      // Utiliza el cliente Prisma para obtener todos los registros de la tabla stock
-      const records = await GetController.prisma.stock.findMany({
-        select: {
-          id_stock: true,
-          nom_prod_stock: true,
-          cant_stock: true,
-         
-        },
-      });
+// Función para obtener solo la cantidad de stock
+static async getAllRecordsStock(req, res) {
+  try {
+    // Obtener solo la cantidad de stock de los productos
+    const stockAmounts = await GetController.prisma.stock.findMany({
+      select: {
+        cant_stock: true,
+      },
+    });
 
-      return res.status(200).json(records);
-    } catch (error) {
-      console.error('Error buscando registros de stock:', error);
-      return res.status(500).json({ error: 'Error buscando registros de stock.', details: error.message });
-    } finally {
-      await GetController.prisma.$disconnect(); // Desconecta el cliente Prisma
-    }
+    return res.status(200).json(stockAmounts);
+  } catch (error) {
+    console.error('Error buscando la cantidad de stock:', error);
+    return res.status(500).json({ error: 'Error buscando la cantidad de stock.', details: error.message });
+  } finally {
+    await prisma.$disconnect(); // Desconecta el cliente Prisma
   }
+}
+
  
-  static async getAllRecordsClientes(req, res) {
-    try {
-      const records = await GetController.prisma.cliente.findMany({
-        select: {
-          id_cliente: true,
-          segmento: true,
-          nom_resp_cliente: true,
-          estado_cliente: true,
-          coment_cliente: true,
-          personas: {
-            select: {
-              nom_persona: true,
-              apel_persona: true,
-              domicilio: {
-                select: {
-                  numero_dom: true,
-                  calle_dom: true,
-                  ciudad: {
-                    select: {
-                      nombre_ciudad: true,
-                    },
+static async getAllRecordsClientes(req, res) {
+  try {
+    const records = await GetController.prisma.cliente.findMany({
+      select: {
+        id_cliente: true,
+        segmento: true,
+        nom_resp_cliente: true,
+        estado_cliente: true,
+        coment_cliente: true,
+        dni_cliente: true, // Campo agregado
+        personas: {
+          select: {
+            nom_persona: true,
+            apel_persona: true,
+            domicilio: {
+              select: {
+                numero_dom: true,
+                calle_dom: true,
+                ciudad: {
+                  select: {
+                    nombre_ciudad: true,
                   },
                 },
               },
-              telefono: {
-                select: {
-                  numero_telefono: true,
-                },
+            },
+            telefono: {
+              select: {
+                numero_telefono: true,
               },
             },
           },
         },
-      });
-  
-      // Serializa los BigInt a string
-      const serializedRecords = records.map(record => ({
-        ...record,
-        personas: {
-          ...record.personas,
-          telefono: record.personas?.telefono?.map(t => ({
-            ...t,
-            numero_telefono: t.numero_telefono?.toString(), // Convierte BigInt a String
-          })),
-        },
-      }));
-  
-      return res.status(200).json(serializedRecords);
-    } catch (error) {
-      console.error('Error buscando registros de cliente:', error);
-      return res.status(500).json({ error: 'Error buscando registros de cliente.', details: error.message });
-    } finally {
-      await GetController.prisma.$disconnect(); // Desconecta el cliente Prisma
-    }
+      },
+    });
+
+    // Serializa los BigInt a string
+    const serializedRecords = records.map(record => ({
+      ...record,
+      personas: {
+        ...record.personas,
+        telefono: record.personas?.telefono?.map(t => ({
+          ...t,
+          numero_telefono: t.numero_telefono?.toString(), // Convierte BigInt a String
+        })),
+      },
+    }));
+
+    return res.status(200).json(serializedRecords);
+  } catch (error) {
+    console.error('Error buscando registros de cliente:', error);
+    return res.status(500).json({ error: 'Error buscando registros de cliente.', details: error.message });
+  } finally {
+    await GetController.prisma.$disconnect(); // Desconecta el cliente Prisma
   }
+}
+
   
      // Función para obtener todos los registros de la tabla ventas
      static async getAllRecordsVentas(req, res) {

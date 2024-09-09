@@ -2,6 +2,7 @@ import express from 'express';
 import {GetController} from '../../queries_db/gets/getsHttp/gets.mjs'
 import { PostController } from '../../queries_db/posts/postsHttp/posts.mjs';
 import { DeleteController } from '../../queries_db/deletes/deleteHttp/delete.mjs';
+import { PutController } from '../../queries_db/Puts/putsHttp/put.mjs';
 
 export const empleadosRouter = express.Router();
 
@@ -15,3 +16,6 @@ empleadosRouter.post('/crear_empleado',PostController.createEmpleado);//http://l
 
 // DELETE ---------------
 empleadosRouter.delete('/:id_empleado',DeleteController.deleteEmpleado);//http://localhost:3000/api/borrar_empleado/1
+
+//PUT -------------
+empleadosRouter.put('/:mail_empleado',PutController.putEmpleado);//

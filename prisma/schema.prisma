@@ -20,6 +20,7 @@ model cliente {
   nom_resp_cliente String?   @db.VarChar(50)
   estado_cliente   String?   @db.VarChar(20)
   coment_cliente   String?   @db.VarChar(50)
+  dni_cliente      String?   @db.VarChar(30)
   id_persona       Int?
   personas         personas? @relation(fields: [id_persona], references: [id_persona], onDelete: NoAction, onUpdate: NoAction)
   ventas           ventas[]

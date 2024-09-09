@@ -30,3 +30,7 @@ mainRouters.use('/borrar_materia_prima',materia_primaRouter);
 mainRouters.use('/borrar_insumo',insumoRouter);
 mainRouters.use('/borrar_empleado',empleadosRouter);
 mainRouters.use('/borrar_venta',ventasRouter);
+
+// ------ puts routes -------------
+mainRouters.use('/actualizar_stock',stockRouter);
+mainRouters.use('/actualizar_empleado',empleadosRouter);

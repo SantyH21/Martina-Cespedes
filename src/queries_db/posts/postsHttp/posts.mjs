@@ -122,23 +122,17 @@ static async createEmpleado(req, res) {
 
 static async createCliente(req, res) {
   try {
-    const { segmento, nom_resp_cliente, estado_cliente, coment_cliente, nom_persona, apel_persona, numero_dom, calle_dom, nombre_ciudad, numero_telefono } = req.body;
+    const { segmento, nom_resp_cliente, estado_cliente, coment_cliente, dni_cliente, nom_persona, apel_persona, numero_dom, calle_dom, nombre_ciudad, numero_telefono } = req.body;
 
-    // Verifica si ya existe un cliente con el mismo nombre y apellido
+    // Verifica si ya existe un cliente con el mismo DNI
     const existingCliente = await PostController.prisma.cliente.findFirst({
       where: {
-        personas: {
-          nom_persona,
-          apel_persona,
-        },
-      },
-      include: {
-        personas: true,
+        dni_cliente: dni_cliente,
       },
     });
 
     if (existingCliente) {
-      return res.status(400).json({ error: 'El cliente ya existe.' });
+      return res.status(400).json({ error: 'El cliente con este DNI ya existe.' });
     }
 
     // Construye los datos opcionales
@@ -165,9 +159,10 @@ static async createCliente(req, res) {
     const newCliente = await PostController.prisma.cliente.create({
       data: {
         segmento,
-        ...(nom_resp_cliente && { nom_resp_cliente }), // Campo opcional
+        nom_resp_cliente,
         estado_cliente,
-        ...(coment_cliente && { coment_cliente }), // Campo opcional
+        coment_cliente,
+        dni_cliente,
         personas: {
           create: {
             nom_persona,
@@ -211,6 +206,7 @@ static async createCliente(req, res) {
     await PostController.prisma.$disconnect();
   }
 }
+
 
 
 
