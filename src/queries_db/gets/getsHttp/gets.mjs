@@ -140,7 +140,7 @@ static async getAllRecordsStock(req, res) {
     console.error('Error buscando la cantidad de stock:', error);
     return res.status(500).json({ error: 'Error buscando la cantidad de stock.', details: error.message });
   } finally {
-    await prisma.$disconnect(); // Desconecta el cliente Prisma
+    await GetController.prisma.$disconnect(); // Desconecta el cliente Prisma
   }
 }
 
