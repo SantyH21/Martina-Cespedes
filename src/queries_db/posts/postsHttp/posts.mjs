@@ -210,43 +210,46 @@ static async createCliente(req, res) {
 
 
 
-    static async createVenta(req, res) {
-      try {
-        const { facturado, cobrado, pendiente, fecha_fac, cantidad_producto, id_cliente, id_empleado, productos } = req.body;
+static async createVenta(req, res) {
+  const { facturado, cobrado, pendiente, cantidad_producto, id_cliente, id_empleado, fecha_fac } = req.body;
+
+  try {
+    // Verifica si hay suficiente stock disponible
+    const stock = await PostController.prisma.stock.findFirst();
     
-        // Validar la lista de productos
-        if (!Array.isArray(productos) || productos.length === 0) {
-          return res.status(400).json({ error: 'La lista de productos es inválida o está vacía.' });
-        }
-    
-        // Crear la venta
-        const nuevaVenta = await PostController.prisma.ventas.create({
-          data: {
-            facturado,
-            cobrado,
-            pendiente,
-            fecha_fac: new Date(fecha_fac),
-            cantidad_producto,
-            cliente: { connect: { id_cliente } },
-            empleado: { connect: { id_empleado } },
-          }
-        });
-    
-        // Crear las entradas en la tabla intermedia VentaProducto
-        const ventaProductoData = productos.map(id_prod => ({
-          id_ventas: nuevaVenta.id_ventas,
-          id_prod
-        }));
-    
-        await PostController.prisma.ventaProducto.createMany({
-          data: ventaProductoData
-        });
-    
-        res.status(201).json(nuevaVenta);
-      } catch (error) {
-        console.error('Error al crear la venta:', error);
-        res.status(500).json({ error: 'Error al crear la venta' });
-      }
+    if (!stock || stock.cant_stock < cantidad_producto) {
+      return res.status(400).json({ error: 'Stock insuficiente para realizar la venta.' });
     }
+
+    // Crea la nueva venta
+    const nuevaVenta = await PostController.prisma.ventas.create({
+      data: {
+        facturado,
+        cobrado,
+        pendiente,
+        cantidad_producto,
+        id_cliente,
+        id_empleado,
+        fecha_fac: fecha_fac ? new Date(fecha_fac) : new Date(),  // Usar la fecha proporcionada o la actual
+      }
+    });
+
+    // Resta la cantidad del stock
+    await PostController.prisma.stock.update({
+      where: { id_stock: stock.id_stock },
+      data: {
+        cant_stock: stock.cant_stock - cantidad_producto,
+      },
+    });
+
+    return res.status(201).json(nuevaVenta);
+  } catch (error) {
+    console.error('Error al crear la venta:', error);
+    return res.status(500).json({ error: 'Error al crear la venta.', details: error.message });
+  } finally {
+    await PostController.prisma.$disconnect();
+  }
+}
+
     
   }

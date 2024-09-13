@@ -16,6 +16,7 @@ mainRouters.use('/ver_materia_prima',materia_primaRouter);
 mainRouters.use('/ver_stock',stockRouter);
 mainRouters.use('/ver_clientes',clienteRouter);
 mainRouters.use('/movimientos',ventasRouter);
+mainRouters.use('/nueva_venta',ventasRouter);
 
 //-----posts routes--------
 mainRouters.use('/produccion',materia_primaRouter);

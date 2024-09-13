@@ -200,10 +200,9 @@ static async getAllRecordsClientes(req, res) {
     await GetController.prisma.$disconnect(); // Desconecta el cliente Prisma
   }
 }
-
   
-     // Función para obtener todos los registros de la tabla ventas
-     static async getAllRecordsVentas(req, res) {
+// Función para obtener todos los registros de la tabla ventas
+static async getAllRecordsVentas(req, res) {
       try {
         const records = await GetController.prisma.ventas.findMany({
           select: {
@@ -241,6 +240,53 @@ static async getAllRecordsClientes(req, res) {
         console.error('Error al obtener registros de ventas:', error);
         return res.status(500).json({ error: 'Error al obtener registros de ventas.' });
       }
+  }
+
+
+// Función para obtener clientes con nombre completo y cantidad de stock
+static async getClientesConStock(req, res) {
+    try {
+      // Obtener los registros de clientes
+      const clientes = await GetController.prisma.cliente.findMany({
+        select: {
+          id_cliente: true,
+          personas: {
+            select: {
+              nom_persona: true,
+              apel_persona: true
+            }
+          }
+        }
+      });
+
+      // Obtener los registros de stock
+      const stock = await GetController.prisma.stock.findMany({
+        select: {
+          cant_stock: true,
+        }
+      });
+
+      // Serializar los datos de los clientes y combinar nombre y apellido
+      const clientesConNombreCompleto = clientes.map(cliente => ({
+        id_cliente: cliente.id_cliente,
+        nombre_completo: `${cliente.personas.nom_persona} ${cliente.personas.apel_persona}`,
+      }));
+
+      // Formatear la respuesta final
+      const response = {
+        clientes: clientesConNombreCompleto,
+        stock: stock.map(s => ({
+          cant_stock: s.cant_stock
+        }))
+      };
+
+      return res.status(200).json(response);
+    } catch (error) {
+      console.error('Error obteniendo clientes con stock:', error);
+      return res.status(500).json({ error: 'Error obteniendo clientes con stock.', details: error.message });
+    } finally {
+      await GetController.prisma.$disconnect(); // Desconecta el cliente Prisma
     }
+  }
     
 }

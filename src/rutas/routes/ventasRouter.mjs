@@ -9,6 +9,8 @@ export const ventasRouter = express.Router();
 
 ventasRouter.get('/historial_ventas', GetController.getAllRecordsVentas);//http://localhost:3000/api/movimientos/historial_ventas
 
+ventasRouter.get('/', GetController.getClientesConStock);
+
 // POST ----------------
 ventasRouter.post('/crear_venta',PostController.createVenta);//http://localhost:3000/api/ventas/crear_venta
 
