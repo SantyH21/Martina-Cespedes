@@ -209,19 +209,17 @@ static async createCliente(req, res) {
 
 
 
-
 static async createVenta(req, res) {
-  const { facturado, cobrado, pendiente, cantidad_producto, id_cliente, id_empleado, fecha_fac } = req.body;
-
   try {
-    // Verifica si hay suficiente stock disponible
-    const stock = await PostController.prisma.stock.findFirst();
-    
-    if (!stock || stock.cant_stock < cantidad_producto) {
-      return res.status(400).json({ error: 'Stock insuficiente para realizar la venta.' });
+    const { facturado, cobrado, pendiente, cantidad_producto, id_cliente, id_empleado, fecha_fac } = req.body;
+
+    // Restar stock
+    const stock = await PostController.prisma.stock.findFirst(); // Encuentra el stock del único producto
+    if (stock.cant_stock < cantidad_producto) {
+      return res.status(400).json({ error: 'No hay suficiente stock disponible.' });
     }
 
-    // Crea la nueva venta
+    // Crear la venta
     const nuevaVenta = await PostController.prisma.ventas.create({
       data: {
         facturado,
@@ -230,16 +228,14 @@ static async createVenta(req, res) {
         cantidad_producto,
         id_cliente,
         id_empleado,
-        fecha_fac: fecha_fac ? new Date(fecha_fac) : new Date(),  // Usar la fecha proporcionada o la actual
-      }
+        fecha_fac: fecha_fac ? new Date(fecha_fac) : new Date(), // Si no hay fecha, usa la actual
+      },
     });
 
-    // Resta la cantidad del stock
+    // Actualizar stock
     await PostController.prisma.stock.update({
       where: { id_stock: stock.id_stock },
-      data: {
-        cant_stock: stock.cant_stock - cantidad_producto,
-      },
+      data: { cant_stock: stock.cant_stock - cantidad_producto },
     });
 
     return res.status(201).json(nuevaVenta);
@@ -247,9 +243,10 @@ static async createVenta(req, res) {
     console.error('Error al crear la venta:', error);
     return res.status(500).json({ error: 'Error al crear la venta.', details: error.message });
   } finally {
-    await PostController.prisma.$disconnect();
+    await PostController.prisma.$disconnect(); // Asegura que Prisma se desconecte
   }
 }
+
 
     
   }
