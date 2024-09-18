@@ -2,263 +2,148 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-async function seed() {
+async function main() {
+  // Eliminar todos los registros en el orden correcto para evitar conflictos de relaciones
+  await prisma.VentaProducto.deleteMany();
+  await prisma.ventas.deleteMany();
+  await prisma.domicilio.deleteMany();
+  await prisma.telefono.deleteMany();
+  await prisma.empleado.deleteMany();
+  await prisma.cliente.deleteMany();
+  await prisma.personas.deleteMany();
+  await prisma.stock.deleteMany();
+  await prisma.insumo.deleteMany();
+  await prisma.materia_prima.deleteMany();
+  await prisma.producto.deleteMany();
+  await prisma.ciudad.deleteMany();
 
-    // Crea 3 registros únicos para cada tabla
-    // Tabla ciudad
-    const ciudad1 = await prisma.ciudad.create({
-      data: { nombre_ciudad: 'Ciudad 1' },
-    });
-    const ciudad2 = await prisma.ciudad.create({
-      data: { nombre_ciudad: 'Ciudad 2' },
-    });
-    const ciudad3 = await prisma.ciudad.create({
-      data: { nombre_ciudad: 'Ciudad 3' },
-    });
-  
-    // Tabla personas
-    const persona1 = await prisma.personas.create({
-      data: {
-        nom_persona: 'Persona 1',
-        apel_persona: 'Apellido 1',
-      },
-    });
-    const persona2 = await prisma.personas.create({
-      data: {
-        nom_persona: 'Persona 2',
-        apel_persona: 'Apellido 2',
-      },
-    });
-    const persona3 = await prisma.personas.create({
-      data: {
-        nom_persona: 'Persona 3',
-        apel_persona: 'Apellido 3',
-      },
-    });
-  
-    // Tabla cliente
-    const cliente1 = await prisma.cliente.create({
-      data: {
-        segmento: 'Segmento 1',
-        nom_resp_cliente: 'Responsable 1',
-        estado_cliente: 'Activo',
-        coment_cliente: 'Comentario 1',
-        id_persona: persona1.id_persona,
-      },
-    });
-    const cliente2 = await prisma.cliente.create({
-      data: {
-        segmento: 'Segmento 2',
-        nom_resp_cliente: 'Responsable 2',
-        estado_cliente: 'Activo',
-        coment_cliente: 'Comentario 2',
-        id_persona: persona2.id_persona,
-      },
-    });
-    const cliente3 = await prisma.cliente.create({
-      data: {
-        segmento: 'Segmento 3',
-        nom_resp_cliente: 'Responsable 3',
-        estado_cliente: 'Inactivo',
-        coment_cliente: 'Comentario 3',
-        id_persona: persona3.id_persona,
-      },
-    });
-  
-    // Tabla domicilio
-    const domicilio1 = await prisma.domicilio.create({
-      data: {
-        numero_dom: 123,
-        calle_dom: 'Calle 1',
-        id_persona: persona1.id_persona,
-        id_ciudad: ciudad1.id_ciudad,
-      },
-    });
-    const domicilio2 = await prisma.domicilio.create({
-      data: {
-        numero_dom: 456,
-        calle_dom: 'Calle 2',
-        id_persona: persona2.id_persona,
-        id_ciudad: ciudad2.id_ciudad,
-      },
-    });
-    const domicilio3 = await prisma.domicilio.create({
-      data: {
-        numero_dom: 789,
-        calle_dom: 'Calle 3',
-        id_persona: persona3.id_persona,
-        id_ciudad: ciudad3.id_ciudad,
-      },
-    });
-  
-    // Tabla empleado
-    const empleado1 = await prisma.empleado.create({
-      data: {
-        cargo_emp: 'Cargo 1',
-        id_persona: persona1.id_persona,
-        contrasena_empleado: 'Contraseña 1',
-        mail_empleado: 'mail1@example.com',
-      },
-    });
-    const empleado2 = await prisma.empleado.create({
-      data: {
-        cargo_emp: 'Cargo 2',
-        id_persona: persona2.id_persona,
-        contrasena_empleado: 'Contraseña 2',
-        mail_empleado: 'mail2@example.com',
-      },
-    });
-    const empleado3 = await prisma.empleado.create({
-      data: {
-        cargo_emp: 'Cargo 3',
-        id_persona: persona3.id_persona,
-        contrasena_empleado: 'Contraseña 3',
-        mail_empleado: 'mail3@example.com',
-      },
-    });
-  
-    // Tabla insumo
-    const insumo1 = await prisma.insumo.create({
-      data: {
-        nom_insumo: 'Insumo 1',
-      },
-    });
-    const insumo2 = await prisma.insumo.create({
-      data: {
-        nom_insumo: 'Insumo 2',
-      },
-    });
-    const insumo3 = await prisma.insumo.create({
-      data: {
-        nom_insumo: 'Insumo 3',
-      },
-    });
-  
-    // Tabla materia_prima
-    const materiaPrima1 = await prisma.materia_prima.create({
-      data: {
-        nom_mat_prima: 'Materia Prima 1',
-      },
-    });
-    const materiaPrima2 = await prisma.materia_prima.create({
-      data: {
-        nom_mat_prima: 'Materia Prima 2',
-      },
-    });
-    const materiaPrima3 = await prisma.materia_prima.create({
-      data: {
-        nom_mat_prima: 'Materia Prima 3',
-      },
-    });
-  
-    // Tabla producto
-    const producto1 = await prisma.producto.create({
-      data: {
-        nom_prod: 'Producto 1',
-      },
-    });
-    const producto2 = await prisma.producto.create({
-      data: {
-        nom_prod: 'Producto 2',
-      },
-    });
-    const producto3 = await prisma.producto.create({
-      data: {
-        nom_prod: 'Producto 3',
-      },
-    });
-   
-    // Tabla stock
-    const stock1 = await prisma.stock.create({
-      data: {
-        nom_prod_stock: 'Stock 1',
-        cant_stock: 100,
-        id_prod: producto1.id_prod,
-      },
-    });
-    const stock2 = await prisma.stock.create({
-      data: {
-        nom_prod_stock: 'Stock 2',
-        cant_stock: 200,
-        id_prod: producto2.id_prod,
-      },
-    });
-    const stock3 = await prisma.stock.create({
-      data: {
-        nom_prod_stock: 'Stock 3',
-        cant_stock: 300,
-        id_prod: producto3.id_prod,
-      },
-    });
-  
-    // Tabla telefono
-    const telefono1 = await prisma.telefono.create({
-      data: {
-        numero_telefono: 1234567890n,
-        id_persona: persona1.id_persona,
-      },
-    });
-    const telefono2 = await prisma.telefono.create({
-      data: {
-        numero_telefono: 2345678901n,
-        id_persona: persona2.id_persona,
-      },
-    });
-    const telefono3 = await prisma.telefono.create({
-      data: {
-        numero_telefono: 3456789012n,
-        id_persona: persona3.id_persona,
-      },
-    });
-  
-    // Tabla ventas
-    const ventas1 = await prisma.ventas.create({
-      data: {
-        facturado: 'Sí',
-        cobrado: 'Sí',
-        pendiente: 'No',
-        id_cliente: cliente1.id_cliente,
-        id_empleado: empleado1.id_empleado,
+  // Crear el único registro en la tabla producto
+  const producto = await prisma.producto.create({
+    data: {
+      nom_prod: 'Gin',
+    },
+  });
 
-      },
-    });
-    const ventas2 = await prisma.ventas.create({
-      data: {
-        facturado: 'No',
-        cobrado: 'No',
-        pendiente: 'Sí',
-        id_cliente: cliente2.id_cliente,
-        id_empleado: empleado2.id_empleado,
-      },
-    });
-    const ventas3 = await prisma.ventas.create({
-      data: {
-        facturado: 'Sí',
-        cobrado: 'No',
-        pendiente: 'Sí',
-        id_cliente: cliente3.id_cliente,
-        id_empleado: empleado3.id_empleado,
-      },
-    });
-  
-    console.log('Datos de ejemplo insertados correctamente.');
-  }
-  
-  seed()
-    .catch((e) => {
-      console.error(e);
-      process.exit(1);
-    })
-    .finally(async () => {
-      await prisma.$disconnect();
-    });
+  // Crear registros para la tabla ciudad
+  const ciudades = await prisma.ciudad.createMany({
+    data: [
+      { nombre_ciudad: 'Yerba Buena' },
+      { nombre_ciudad: 'San Miguel de Tucumán' },
+      { nombre_ciudad: 'Madrid' },
+      { nombre_ciudad: 'Barcelona' },
+      { nombre_ciudad: 'Mar del Plata' },
+      { nombre_ciudad: 'Posadas' },
+    ],
+  });
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  // Obtener las ciudades insertadas
+  const ciudadesInsertadas = await prisma.ciudad.findMany();
+
+  // Crear registros para la tabla personas y obtener sus IDs
+  const personasInsertadas = await prisma.personas.createMany({
+    data: [
+      { nom_persona: 'Santiago', apel_persona: 'Heredia' },
+      { nom_persona: 'Bernardita', apel_persona: 'Peñalba' },
+      { nom_persona: 'Pilar', apel_persona: 'Teran' },
+      { nom_persona: 'Ernesto', apel_persona: 'Rico' },
+      { nom_persona: 'Lorenzo', apel_persona: 'Heredia' },
+      { nom_persona: 'Graciana', apel_persona: 'Jimenez' },
+    ],
+  });
+
+  // Obtener los IDs reales de las personas insertadas
+  const personas = await prisma.personas.findMany();
+
+  // Crear domicilios utilizando los IDs de ciudad y persona correctos
+  await prisma.domicilio.createMany({
+    data: [
+      { numero_dom: 101, calle_dom: 'Calle 1', id_ciudad: ciudadesInsertadas[0].id_ciudad, id_persona: personas[0].id_persona },
+      { numero_dom: 102, calle_dom: 'Calle 2', id_ciudad: ciudadesInsertadas[1].id_ciudad, id_persona: personas[1].id_persona },
+      { numero_dom: 103, calle_dom: 'Calle 3', id_ciudad: ciudadesInsertadas[2].id_ciudad, id_persona: personas[2].id_persona },
+      { numero_dom: 104, calle_dom: 'Calle 4', id_ciudad: ciudadesInsertadas[3].id_ciudad, id_persona: personas[3].id_persona },
+      { numero_dom: 105, calle_dom: 'Calle 5', id_ciudad: ciudadesInsertadas[4].id_ciudad, id_persona: personas[4].id_persona },
+      { numero_dom: 106, calle_dom: 'Calle 6', id_ciudad: ciudadesInsertadas[5].id_ciudad, id_persona: personas[5].id_persona },
+    ],
+  });
+
+  // Crear teléfonos utilizando los IDs de persona correctos
+  await prisma.telefono.createMany({
+    data: [
+      { numero_telefono: BigInt('1234567890'), id_persona: personas[0].id_persona },
+      { numero_telefono: BigInt('2345678901'), id_persona: personas[1].id_persona },
+      { numero_telefono: BigInt('3456789012'), id_persona: personas[2].id_persona },
+      { numero_telefono: BigInt('4567890123'), id_persona: personas[3].id_persona },
+      { numero_telefono: BigInt('5678901234'), id_persona: personas[4].id_persona },
+      { numero_telefono: BigInt('6789012345'), id_persona: personas[5].id_persona },
+    ],
+  });
+
+  // Crear clientes utilizando los IDs de persona correctos
+  await prisma.cliente.createMany({
+    data: [
+      { segmento: 'A', nom_resp_cliente: 'Pedro', estado_cliente: 'Activo', dni_cliente: '11111111', id_persona: personas[0].id_persona },
+      { segmento: 'B', nom_resp_cliente: 'Luis', estado_cliente: 'Activo', dni_cliente: '22222222', id_persona: personas[1].id_persona },
+      { segmento: 'C', nom_resp_cliente: 'Simon', estado_cliente: 'Inactivo', dni_cliente: '33333333', id_persona: personas[2].id_persona },
+      { segmento: 'D', nom_resp_cliente: 'Jorge', estado_cliente: 'Activo', dni_cliente: '44444444', id_persona: personas[3].id_persona },
+      { segmento: 'E', nom_resp_cliente: 'Baltazar', estado_cliente: 'Activo', dni_cliente: '55555555', id_persona: personas[4].id_persona },
+      { segmento: 'F', nom_resp_cliente: 'Valentin', estado_cliente: 'Inactivo', dni_cliente: '66666666', id_persona: personas[5].id_persona },
+    ],
+  });
+
+  // Crear empleados utilizando los IDs de persona correctos
+  await prisma.empleado.createMany({
+    data: [
+      { cargo_emp: 'Gerente', contrasena_empleado: 'pass1', mail_empleado: 'emp1@empresa.com', id_persona: personas[0].id_persona },
+      { cargo_emp: 'Asistente', contrasena_empleado: 'pass2', mail_empleado: 'emp2@empresa.com', id_persona: personas[1].id_persona },
+      { cargo_emp: 'Contador', contrasena_empleado: 'pass3', mail_empleado: 'emp3@empresa.com', id_persona: personas[2].id_persona },
+      { cargo_emp: 'Vendedor', contrasena_empleado: 'pass4', mail_empleado: 'emp4@empresa.com', id_persona: personas[3].id_persona },
+      { cargo_emp: 'Gerente', contrasena_empleado: 'pass5', mail_empleado: 'emp5@empresa.com', id_persona: personas[4].id_persona },
+      { cargo_emp: 'Asistente', contrasena_empleado: 'pass6', mail_empleado: 'emp6@empresa.com', id_persona: personas[5].id_persona },
+    ],
+  });
+
+  // Crear insumos
+  await prisma.insumo.createMany({
+    data: [
+      { nom_insumo: 'Etiqueta', descripcion: 'Desc Etiqueta', cantidad: 10, id_prod: producto.id_prod },
+      { nom_insumo: 'Botella', descripcion: 'Desc Botella', cantidad: 20, id_prod: producto.id_prod },
+      { nom_insumo: 'Separadores', descripcion: 'Desc Separador', cantidad: 30, id_prod: producto.id_prod },
+      { nom_insumo: 'Tapon', descripcion: 'Desc tapon', cantidad: 40, id_prod: producto.id_prod },
+      { nom_insumo: 'Caja', descripcion: 'Desc caja', cantidad: 50, id_prod: producto.id_prod },
+      { nom_insumo: 'Termocontraible', descripcion: 'Desc termoc.', cantidad: 60, id_prod: producto.id_prod },
+    ],
+  });
+
+  // Crear materia prima
+  await prisma.materia_prima.createMany({
+    data: [
+      { nom_mat_prima: 'Enebro', descripcion: 'Desc. Enebro', cantidad: 100, medida: 'kg', id_prod: producto.id_prod },
+      { nom_mat_prima: 'Coriando', descripcion: 'Desc. Coriando', cantidad: 200, medida: 'kg', id_prod: producto.id_prod },
+      { nom_mat_prima: 'Regaliz', descripcion: 'Desc. Regaliz', cantidad: 300, medida: 'kg', id_prod: producto.id_prod },
+      { nom_mat_prima: 'Clavo de olor', descripcion: 'Desc. Clavo de olor', cantidad: 400, medida: 'kg', id_prod: producto.id_prod },
+      { nom_mat_prima: 'Canela', descripcion: 'Desc. Canela', cantidad: 500, medida: 'kg', id_prod: producto.id_prod },
+      { nom_mat_prima: 'Cedron', descripcion: 'Desc. Cedron', cantidad: 600, medida: 'kg', id_prod: producto.id_prod },
+    ],
+  });
+
+  // Crear stock utilizando el ID del producto
+  await prisma.stock.create({
+    data: {
+      nom_prod_stock: 'Gin',
+      cant_stock: 1000,
+      id_prod: producto.id_prod,
+    },
+  });
+
+  console.log('Datos insertados con éxito');
+}
+
+main()
+.catch((e) => {
+  console.error(e);
+  process.exit(1);
+})
+.finally(async () => {
+  await prisma.$disconnect();
+});
+
